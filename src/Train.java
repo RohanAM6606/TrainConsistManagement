@@ -58,8 +58,7 @@ public class Train {
 
         System.out.println("\nBogie Details:");
         for(String id : bogieIds){
-            String type = bogieDetails.get(id);
-            System.out.println("Bogie ID: " + id + " | Type: " + type);
+            System.out.println("Bogie ID: " + id + " | Type: " + bogieDetails.get(id));
         }
 
         String checkId = "BG101";
@@ -107,6 +106,29 @@ public class Train {
 
         System.out.println("\nFinal Train Formation:");
         System.out.println(trainFormation);
+
+        // ---------------- UC6 ----------------
+
+        System.out.println("\n--- UC6: Map Bogie to Capacity using HashMap ---");
+
+        Map<String, Integer> bogieCapacity = new HashMap<>();
+
+        bogieCapacity.put("Sleeper", 72);
+        bogieCapacity.put("AC Chair", 60);
+        bogieCapacity.put("First Class", 24);
+        bogieCapacity.put("Cargo", 100);
+
+        System.out.println("\nBogie Capacity Details:");
+        for (Map.Entry<String, Integer> entry : bogieCapacity.entrySet()) {
+            System.out.println("Bogie: " + entry.getKey() +
+                    " | Capacity: " + entry.getValue());
+        }
+
+        String search = "Sleeper";
+        if (bogieCapacity.containsKey(search)) {
+            System.out.println("\nCapacity of " + search + ": " +
+                    bogieCapacity.get(search));
+        }
 
         // End
         System.out.println("\nProgram continues...");
