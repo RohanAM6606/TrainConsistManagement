@@ -70,7 +70,34 @@ public class Train {
             System.out.println("\nDetails of " + checkId + ": " + bogieDetails.get(checkId));
         }
 
-        // Program continues
-        System.out.println("\nProgram continues...");
+        // ---------------- UC4(2)----------------
+
+        System.out.println("\n--- UC4: Maintain Ordered Bogie IDs using LinkedList ---");
+
+// Create LinkedList for ordered consist
+        LinkedList<String> trainOrder = new LinkedList<>();
+
+// Add bogies
+        trainOrder.add("Engine");
+        trainOrder.add("Sleeper");
+        trainOrder.add("AC");
+        trainOrder.add("Cargo");
+        trainOrder.add("Guard");
+
+        System.out.println("\nInitial Train Consist:");
+        System.out.println(trainOrder);
+
+// Insert Pantry at position 2
+        trainOrder.add(2, "Pantry");
+
+        System.out.println("\nAfter inserting Pantry at position 2:");
+        System.out.println(trainOrder);
+
+// Remove first and last bogie
+        trainOrder.removeFirst();
+        trainOrder.removeLast();
+
+        System.out.println("\nAfter removing first and last bogie:");
+        System.out.println(trainOrder);
     }
 }
