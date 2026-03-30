@@ -1,6 +1,6 @@
 import java.util.*;
 
-// ---------------- Bogie Class (UC7) ----------------
+// ---------------- Bogie Class (UC7 & UC8) ----------------
 class Bogie {
     String name;
     int capacity;
@@ -38,7 +38,7 @@ public class Train {
         bogieIds.add("BG101");
         bogieIds.add("BG102");
         bogieIds.add("BG103");
-        bogieIds.add("BG101"); // duplicate
+        bogieIds.add("BG101");
 
         System.out.println("\nUnique Bogie IDs: " + bogieIds);
 
@@ -53,7 +53,7 @@ public class Train {
             System.out.println(id + " → " + bogieDetails.get(id));
         }
 
-        // ---------------- UC4 (LinkedList) ----------------
+        // ---------------- UC4 (LinkedList Order) ----------------
         LinkedList<String> trainOrder = new LinkedList<>();
         trainOrder.add("Engine");
         trainOrder.add("Sleeper");
@@ -73,7 +73,7 @@ public class Train {
         trainFormation.add("Sleeper");
         trainFormation.add("Cargo");
         trainFormation.add("Guard");
-        trainFormation.add("Sleeper"); // duplicate
+        trainFormation.add("Sleeper");
 
         System.out.println("\nOrdered + Unique Formation: " + trainFormation);
 
@@ -91,14 +91,12 @@ public class Train {
         // ---------------- UC7 ----------------
         System.out.println("\n--- UC7: Sort Bogies by Capacity ---");
 
-        // Create List of Bogie objects
         List<Bogie> bogies = new ArrayList<>();
-
         bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("AC Chair", 60));
         bogies.add(new Bogie("First Class", 24));
 
-        // Sort using Comparator (ascending)
+        // Sort ascending
         bogies.sort(Comparator.comparingInt(b -> b.capacity));
 
         System.out.println("\nSorted Bogies (Ascending):");
@@ -106,13 +104,16 @@ public class Train {
             System.out.println(b);
         }
 
-        // Sort descending
-        bogies.sort((a, b) -> b.capacity - a.capacity);
+        // ---------------- UC8 ----------------
+        System.out.println("\n--- UC8: Filter Bogies using Streams ---");
 
-        System.out.println("\nSorted Bogies (Descending):");
-        for(Bogie b : bogies){
-            System.out.println(b);
-        }
+        // Filter bogies with capacity >= 50
+        List<Bogie> filtered = bogies.stream()
+                .filter(b -> b.capacity >= 50)
+                .toList();
+
+        System.out.println("\nFiltered Bogies (Capacity >= 50):");
+        filtered.forEach(System.out::println);
 
         System.out.println("\nProgram continues...");
     }
