@@ -1,13 +1,16 @@
 import java.util.*;
+import java.util.stream.*;
 
-// ---------------- Bogie Class (UC7 & UC8) ----------------
+// ---------------- Bogie Class ----------------
 class Bogie {
     String name;
     int capacity;
+    String type; // Passenger / Goods
 
-    Bogie(String name, int capacity) {
+    Bogie(String name, int capacity, String type) {
         this.name = name;
         this.capacity = capacity;
+        this.type = type;
     }
 
     @Override
@@ -92,14 +95,13 @@ public class Train {
         System.out.println("\n--- UC7: Sort Bogies by Capacity ---");
 
         List<Bogie> bogies = new ArrayList<>();
-        bogies.add(new Bogie("Sleeper", 72));
-        bogies.add(new Bogie("AC Chair", 60));
-        bogies.add(new Bogie("First Class", 24));
+        bogies.add(new Bogie("Sleeper", 72, "Passenger"));
+        bogies.add(new Bogie("AC Chair", 60, "Passenger"));
+        bogies.add(new Bogie("First Class", 24, "Passenger"));
 
-        // Sort ascending
         bogies.sort(Comparator.comparingInt(b -> b.capacity));
 
-        System.out.println("\nSorted Bogies (Ascending):");
+        System.out.println("\nSorted Bogies:");
         for(Bogie b : bogies){
             System.out.println(b);
         }
@@ -107,13 +109,36 @@ public class Train {
         // ---------------- UC8 ----------------
         System.out.println("\n--- UC8: Filter Bogies using Streams ---");
 
-        // Filter bogies with capacity >= 50
         List<Bogie> filtered = bogies.stream()
                 .filter(b -> b.capacity >= 50)
                 .toList();
 
         System.out.println("\nFiltered Bogies (Capacity >= 50):");
         filtered.forEach(System.out::println);
+
+        // ---------------- UC9 ----------------
+        System.out.println("\n--- UC9: Group Bogies by Type ---");
+
+        List<Bogie> allBogies = new ArrayList<>();
+
+        allBogies.add(new Bogie("Sleeper", 72, "Passenger"));
+        allBogies.add(new Bogie("AC Chair", 60, "Passenger"));
+        allBogies.add(new Bogie("First Class", 24, "Passenger"));
+        allBogies.add(new Bogie("Cargo", 100, "Goods"));
+        allBogies.add(new Bogie("Oil Tanker", 120, "Goods"));
+
+        Map<String, List<Bogie>> grouped =
+                allBogies.stream()
+                        .collect(Collectors.groupingBy(b -> b.type));
+
+        System.out.println("\nGrouped Bogies:");
+
+        for (Map.Entry<String, List<Bogie>> entry : grouped.entrySet()) {
+            System.out.println("\nType: " + entry.getKey());
+            for (Bogie b : entry.getValue()) {
+                System.out.println("  " + b);
+            }
+        }
 
         System.out.println("\nProgram continues...");
     }
