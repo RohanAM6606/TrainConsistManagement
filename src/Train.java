@@ -3,7 +3,7 @@ import java.util.*;
 public class Train {
     public static void main(String[] args){
 
-        // UC1: Initialization
+        // ---------------- UC1 ----------------
         System.out.println("=== Train Consist Management App ===");
         System.out.println("Version: 1.0");
         System.out.println("System initialized successfully.");
@@ -46,38 +46,33 @@ public class Train {
         System.out.println("Unique Bogie IDs:");
         System.out.println(bogieIds);
 
-        // ---------------- UC4 ----------------
+        // ---------------- UC4 (Map for Details) ----------------
 
         System.out.println("\n--- UC4: Bogie Details using Map ---");
 
-        // Map: Bogie ID → Bogie Type
         Map<String, String> bogieDetails = new HashMap<>();
 
         bogieDetails.put("BG101", "Sleeper");
         bogieDetails.put("BG102", "First Class");
         bogieDetails.put("BG103", "Sleeper");
 
-        // Display bogie details
         System.out.println("\nBogie Details:");
         for(String id : bogieIds){
             String type = bogieDetails.get(id);
             System.out.println("Bogie ID: " + id + " | Type: " + type);
         }
 
-        // Check specific bogie
         String checkId = "BG101";
         if(bogieDetails.containsKey(checkId)){
             System.out.println("\nDetails of " + checkId + ": " + bogieDetails.get(checkId));
         }
 
-        // ---------------- UC4(2)----------------
+        // ---------------- UC4 (LinkedList Order) ----------------
 
-        System.out.println("\n--- UC4: Maintain Ordered Bogie IDs using LinkedList ---");
+        System.out.println("\n--- UC4: Maintain Ordered Bogies using LinkedList ---");
 
-// Create LinkedList for ordered consist
         LinkedList<String> trainOrder = new LinkedList<>();
 
-// Add bogies
         trainOrder.add("Engine");
         trainOrder.add("Sleeper");
         trainOrder.add("AC");
@@ -87,17 +82,33 @@ public class Train {
         System.out.println("\nInitial Train Consist:");
         System.out.println(trainOrder);
 
-// Insert Pantry at position 2
         trainOrder.add(2, "Pantry");
 
         System.out.println("\nAfter inserting Pantry at position 2:");
         System.out.println(trainOrder);
 
-// Remove first and last bogie
         trainOrder.removeFirst();
         trainOrder.removeLast();
 
         System.out.println("\nAfter removing first and last bogie:");
         System.out.println(trainOrder);
+
+        // ---------------- UC5 ----------------
+
+        System.out.println("\n--- UC5: Ordered + Unique using LinkedHashSet ---");
+
+        Set<String> trainFormation = new LinkedHashSet<>();
+
+        trainFormation.add("Engine");
+        trainFormation.add("Sleeper");
+        trainFormation.add("Cargo");
+        trainFormation.add("Guard");
+        trainFormation.add("Sleeper"); // duplicate
+
+        System.out.println("\nFinal Train Formation:");
+        System.out.println(trainFormation);
+
+        // End
+        System.out.println("\nProgram continues...");
     }
 }
