@@ -35,19 +35,40 @@ public class Train {
 
         System.out.println("\n--- UC3: Unique Bogie IDs using HashSet ---");
 
-        // Create HashSet
         Set<String> bogieIds = new HashSet<>();
 
-        // Add bogie IDs (including duplicates)
         bogieIds.add("BG101");
         bogieIds.add("BG102");
         bogieIds.add("BG103");
         bogieIds.add("BG101"); // duplicate
         bogieIds.add("BG102"); // duplicate
 
-        // Display unique bogie IDs
         System.out.println("Unique Bogie IDs:");
         System.out.println(bogieIds);
+
+        // ---------------- UC4 ----------------
+
+        System.out.println("\n--- UC4: Bogie Details using Map ---");
+
+        // Map: Bogie ID → Bogie Type
+        Map<String, String> bogieDetails = new HashMap<>();
+
+        bogieDetails.put("BG101", "Sleeper");
+        bogieDetails.put("BG102", "First Class");
+        bogieDetails.put("BG103", "Sleeper");
+
+        // Display bogie details
+        System.out.println("\nBogie Details:");
+        for(String id : bogieIds){
+            String type = bogieDetails.get(id);
+            System.out.println("Bogie ID: " + id + " | Type: " + type);
+        }
+
+        // Check specific bogie
+        String checkId = "BG101";
+        if(bogieDetails.containsKey(checkId)){
+            System.out.println("\nDetails of " + checkId + ": " + bogieDetails.get(checkId));
+        }
 
         // Program continues
         System.out.println("\nProgram continues...");
