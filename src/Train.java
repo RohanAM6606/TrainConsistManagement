@@ -1,13 +1,16 @@
 import java.util.*;
+import java.util.stream.*;
 
-// ---------------- Bogie Class (UC7) ----------------
+// ---------------- Bogie Class ----------------
 class Bogie {
     String name;
     int capacity;
+    String type; // Passenger / Goods
 
-    Bogie(String name, int capacity) {
+    Bogie(String name, int capacity, String type) {
         this.name = name;
         this.capacity = capacity;
+        this.type = type;
     }
 
     @Override
@@ -38,7 +41,7 @@ public class Train {
         bogieIds.add("BG101");
         bogieIds.add("BG102");
         bogieIds.add("BG103");
-        bogieIds.add("BG101"); // duplicate
+        bogieIds.add("BG101");
 
         System.out.println("\nUnique Bogie IDs: " + bogieIds);
 
@@ -53,7 +56,7 @@ public class Train {
             System.out.println(id + " → " + bogieDetails.get(id));
         }
 
-        // ---------------- UC4 (LinkedList) ----------------
+        // ---------------- UC4 (LinkedList Order) ----------------
         LinkedList<String> trainOrder = new LinkedList<>();
         trainOrder.add("Engine");
         trainOrder.add("Sleeper");
@@ -73,7 +76,7 @@ public class Train {
         trainFormation.add("Sleeper");
         trainFormation.add("Cargo");
         trainFormation.add("Guard");
-        trainFormation.add("Sleeper"); // duplicate
+        trainFormation.add("Sleeper");
 
         System.out.println("\nOrdered + Unique Formation: " + trainFormation);
 
@@ -91,27 +94,50 @@ public class Train {
         // ---------------- UC7 ----------------
         System.out.println("\n--- UC7: Sort Bogies by Capacity ---");
 
-        // Create List of Bogie objects
         List<Bogie> bogies = new ArrayList<>();
+        bogies.add(new Bogie("Sleeper", 72, "Passenger"));
+        bogies.add(new Bogie("AC Chair", 60, "Passenger"));
+        bogies.add(new Bogie("First Class", 24, "Passenger"));
 
-        bogies.add(new Bogie("Sleeper", 72));
-        bogies.add(new Bogie("AC Chair", 60));
-        bogies.add(new Bogie("First Class", 24));
-
-        // Sort using Comparator (ascending)
         bogies.sort(Comparator.comparingInt(b -> b.capacity));
 
-        System.out.println("\nSorted Bogies (Ascending):");
+        System.out.println("\nSorted Bogies:");
         for(Bogie b : bogies){
             System.out.println(b);
         }
 
-        // Sort descending
-        bogies.sort((a, b) -> b.capacity - a.capacity);
+        // ---------------- UC8 ----------------
+        System.out.println("\n--- UC8: Filter Bogies using Streams ---");
 
-        System.out.println("\nSorted Bogies (Descending):");
-        for(Bogie b : bogies){
-            System.out.println(b);
+        List<Bogie> filtered = bogies.stream()
+                .filter(b -> b.capacity >= 50)
+                .toList();
+
+        System.out.println("\nFiltered Bogies (Capacity >= 50):");
+        filtered.forEach(System.out::println);
+
+        // ---------------- UC9 ----------------
+        System.out.println("\n--- UC9: Group Bogies by Type ---");
+
+        List<Bogie> allBogies = new ArrayList<>();
+
+        allBogies.add(new Bogie("Sleeper", 72, "Passenger"));
+        allBogies.add(new Bogie("AC Chair", 60, "Passenger"));
+        allBogies.add(new Bogie("First Class", 24, "Passenger"));
+        allBogies.add(new Bogie("Cargo", 100, "Goods"));
+        allBogies.add(new Bogie("Oil Tanker", 120, "Goods"));
+
+        Map<String, List<Bogie>> grouped =
+                allBogies.stream()
+                        .collect(Collectors.groupingBy(b -> b.type));
+
+        System.out.println("\nGrouped Bogies:");
+
+        for (Map.Entry<String, List<Bogie>> entry : grouped.entrySet()) {
+            System.out.println("\nType: " + entry.getKey());
+            for (Bogie b : entry.getValue()) {
+                System.out.println("  " + b);
+            }
         }
 
         System.out.println("\nProgram continues...");
