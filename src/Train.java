@@ -191,6 +191,41 @@ public class Train {
             System.out.println("Train is NOT safe");
         }
 
+        System.out.println("\n--- UC13: Performance Comparison (Loop vs Stream) ---");
+
+        List<Bogie> testBogies = new ArrayList<>();
+
+        for(int i = 0; i < 100000; i++){
+            testBogies.add(new Bogie("Sleeper", 72, "Passenger"));
+            testBogies.add(new Bogie("AC Chair", 60, "Passenger"));
+            testBogies.add(new Bogie("Cargo", 100, "Goods"));
+        }
+
+        long startLoop = System.nanoTime();
+
+        List<Bogie> loopResult = new ArrayList<>();
+        for(Bogie b : testBogies){
+            if(b.capacity >= 60){
+                loopResult.add(b);
+            }
+        }
+
+        long endLoop = System.nanoTime();
+
+        long startStream = System.nanoTime();
+
+        List<Bogie> streamResult = testBogies.stream()
+                .filter(b -> b.capacity >= 60)
+                .toList();
+
+        long endStream = System.nanoTime();
+
+        long loopTime = endLoop - startLoop;
+        long streamTime = endStream - startStream;
+
+        System.out.println("Loop Time (ns): " + loopTime);
+        System.out.println("Stream Time (ns): " + streamTime);
+
         System.out.println("\nProgram continues...");
     }
 }
