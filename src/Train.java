@@ -2,12 +2,21 @@ import java.util.*;
 import java.util.stream.*;
 import java.util.regex.*;
 
+class InvalidCapacityException extends Exception {
+    InvalidCapacityException(String message) {
+        super(message);
+    }
+}
+
 class Bogie {
     String name;
     int capacity;
     String type;
 
-    Bogie(String name, int capacity, String type) {
+    Bogie(String name, int capacity, String type) throws InvalidCapacityException {
+        if (type.equals("Passenger") && capacity <= 0) {
+            throw new InvalidCapacityException("Invalid capacity for passenger bogie");
+        }
         this.name = name;
         this.capacity = capacity;
         this.type = type;
@@ -16,6 +25,16 @@ class Bogie {
     @Override
     public String toString() {
         return name + " (" + capacity + ")";
+    }
+}
+
+class GoodsBogie {
+    String type;
+    String cargo;
+
+    GoodsBogie(String type, String cargo) {
+        this.type = type;
+        this.cargo = cargo;
     }
 }
 
@@ -86,48 +105,53 @@ public class Train {
 
         System.out.println("\n--- UC7: Sort Bogies by Capacity ---");
 
-        List<Bogie> bogies = new ArrayList<>();
-        bogies.add(new Bogie("Sleeper", 72, "Passenger"));
-        bogies.add(new Bogie("AC Chair", 60, "Passenger"));
-        bogies.add(new Bogie("First Class", 24, "Passenger"));
+        try {
+            List<Bogie> bogies = new ArrayList<>();
+            bogies.add(new Bogie("Sleeper", 72, "Passenger"));
+            bogies.add(new Bogie("AC Chair", 60, "Passenger"));
+            bogies.add(new Bogie("First Class", 24, "Passenger"));
 
-        bogies.sort(Comparator.comparingInt(b -> b.capacity));
+            bogies.sort(Comparator.comparingInt(b -> b.capacity));
 
-        System.out.println("\nSorted Bogies:");
-        for(Bogie b : bogies){
-            System.out.println(b);
-        }
-
-        System.out.println("\n--- UC8: Filter Bogies using Streams ---");
-
-        List<Bogie> filtered = bogies.stream()
-                .filter(b -> b.capacity >= 50)
-                .toList();
-
-        System.out.println("\nFiltered Bogies (Capacity >= 50):");
-        filtered.forEach(System.out::println);
-
-        System.out.println("\n--- UC9: Group Bogies by Type ---");
-
-        List<Bogie> allBogies = new ArrayList<>();
-
-        allBogies.add(new Bogie("Sleeper", 72, "Passenger"));
-        allBogies.add(new Bogie("AC Chair", 60, "Passenger"));
-        allBogies.add(new Bogie("First Class", 24, "Passenger"));
-        allBogies.add(new Bogie("Cargo", 100, "Goods"));
-        allBogies.add(new Bogie("Oil Tanker", 120, "Goods"));
-
-        Map<String, List<Bogie>> grouped =
-                allBogies.stream()
-                        .collect(Collectors.groupingBy(b -> b.type));
-
-        System.out.println("\nGrouped Bogies:");
-
-        for (Map.Entry<String, List<Bogie>> entry : grouped.entrySet()) {
-            System.out.println("\nType: " + entry.getKey());
-            for (Bogie b : entry.getValue()) {
-                System.out.println("  " + b);
+            System.out.println("\nSorted Bogies:");
+            for(Bogie b : bogies){
+                System.out.println(b);
             }
+
+            System.out.println("\n--- UC8: Filter Bogies using Streams ---");
+
+            List<Bogie> filtered = bogies.stream()
+                    .filter(b -> b.capacity >= 50)
+                    .toList();
+
+            System.out.println("\nFiltered Bogies (Capacity >= 50):");
+            filtered.forEach(System.out::println);
+
+            System.out.println("\n--- UC9: Group Bogies by Type ---");
+
+            List<Bogie> allBogies = new ArrayList<>();
+
+            allBogies.add(new Bogie("Sleeper", 72, "Passenger"));
+            allBogies.add(new Bogie("AC Chair", 60, "Passenger"));
+            allBogies.add(new Bogie("First Class", 24, "Passenger"));
+            allBogies.add(new Bogie("Cargo", 100, "Goods"));
+            allBogies.add(new Bogie("Oil Tanker", 120, "Goods"));
+
+            Map<String, List<Bogie>> grouped =
+                    allBogies.stream()
+                            .collect(Collectors.groupingBy(b -> b.type));
+
+            System.out.println("\nGrouped Bogies:");
+
+            for (Map.Entry<String, List<Bogie>> entry : grouped.entrySet()) {
+                System.out.println("\nType: " + entry.getKey());
+                for (Bogie b : entry.getValue()) {
+                    System.out.println("  " + b);
+                }
+            }
+
+        } catch (InvalidCapacityException e) {
+            System.out.println(e.getMessage());
         }
 
         System.out.println("\n--- UC11: Train ID & Cargo Code Validation ---");
@@ -160,6 +184,65 @@ public class Train {
         } else {
             System.out.println("Invalid Cargo Code");
         }
+
+        System.out.println("\n--- UC12: Safety Validation using Streams ---");
+
+        List<GoodsBogie> goodsBogies = new ArrayList<>();
+
+        goodsBogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
+        goodsBogies.add(new GoodsBogie("Box", "Coal"));
+        goodsBogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
+
+        boolean isSafe = goodsBogies.stream()
+                .allMatch(b ->
+                        (b.type.equals("Cylindrical") && b.cargo.equals("Petroleum")) ||
+                        (!b.type.equals("Cylindrical"))
+                );
+
+        if (isSafe) {
+            System.out.println("Train is safety compliant");
+        } else {
+            System.out.println("Train is NOT safe");
+        }
+
+        System.out.println("\n--- UC13: Performance Comparison (Loop vs Stream) ---");
+
+        List<Bogie> testBogies = new ArrayList<>();
+
+        try {
+            for(int i = 0; i < 100000; i++){
+                testBogies.add(new Bogie("Sleeper", 72, "Passenger"));
+                testBogies.add(new Bogie("AC Chair", 60, "Passenger"));
+                testBogies.add(new Bogie("Cargo", 100, "Goods"));
+            }
+        } catch (InvalidCapacityException e) {
+            System.out.println(e.getMessage());
+        }
+
+        long startLoop = System.nanoTime();
+
+        List<Bogie> loopResult = new ArrayList<>();
+        for(Bogie b : testBogies){
+            if(b.capacity >= 60){
+                loopResult.add(b);
+            }
+        }
+
+        long endLoop = System.nanoTime();
+
+        long startStream = System.nanoTime();
+
+        List<Bogie> streamResult = testBogies.stream()
+                .filter(b -> b.capacity >= 60)
+                .toList();
+
+        long endStream = System.nanoTime();
+
+        long loopTime = endLoop - startLoop;
+        long streamTime = endStream - startStream;
+
+        System.out.println("Loop Time (ns): " + loopTime);
+        System.out.println("Stream Time (ns): " + streamTime);
 
         System.out.println("\nProgram continues...");
     }
