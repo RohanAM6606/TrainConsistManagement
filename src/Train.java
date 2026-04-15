@@ -251,11 +251,8 @@ public class Train {
 
         long endStream = System.nanoTime();
 
-        long loopTime = endLoop - startLoop;
-        long streamTime = endStream - startStream;
-
-        System.out.println("Loop Time (ns): " + loopTime);
-        System.out.println("Stream Time (ns): " + streamTime);
+        System.out.println("Loop Time (ns): " + (endLoop - startLoop));
+        System.out.println("Stream Time (ns): " + (endStream - startStream));
 
         System.out.println("\n--- UC15: Safe Cargo Assignment ---");
 
@@ -270,6 +267,25 @@ public class Train {
             System.out.println("Cargo assignment attempt completed");
         }
 
-        System.out.println("\nProgram continues...");
+        System.out.println("\n--- UC16: Bubble Sort Capacities ---");
+
+        int[] capacities = {72, 24, 60, 90, 45};
+
+        for(int i = 0; i < capacities.length - 1; i++){
+            for(int j = 0; j < capacities.length - i - 1; j++){
+                if(capacities[j] > capacities[j + 1]){
+                    int temp = capacities[j];
+                    capacities[j] = capacities[j + 1];
+                    capacities[j + 1] = temp;
+                }
+            }
+        }
+
+        System.out.println("Sorted Capacities:");
+        for(int c : capacities){
+            System.out.print(c + " ");
+        }
+
+        System.out.println("\n\nProgram continues...");
     }
 }
