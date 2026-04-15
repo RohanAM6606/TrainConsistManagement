@@ -286,6 +286,14 @@ public class Train {
             System.out.print(c + " ");
         }
 
-        System.out.println("\n\nProgram continues...");
+        System.out.println("\n\n--- UC17: Arrays.sort() for Bogie Types ---");
+
+        String[] bogieTypes = {"Sleeper", "AC Chair", "First Class", "Cargo", "Pantry"};
+
+        Arrays.sort(bogieTypes);
+
+        System.out.println("Sorted Bogie Types: " + Arrays.toString(bogieTypes));
+
+        System.out.println("\nProgram continues...");
     }
 }
