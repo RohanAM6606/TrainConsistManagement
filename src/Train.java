@@ -1,11 +1,11 @@
 import java.util.*;
 import java.util.stream.*;
+import java.util.regex.*;
 
-// ---------------- Bogie Class ----------------
 class Bogie {
     String name;
     int capacity;
-    String type; // Passenger / Goods
+    String type;
 
     Bogie(String name, int capacity, String type) {
         this.name = name;
@@ -22,13 +22,11 @@ class Bogie {
 public class Train {
     public static void main(String[] args){
 
-        // ---------------- UC1 ----------------
         System.out.println("=== Train Consist Management App ===");
 
         List<String> trainConsist = new ArrayList<>();
         System.out.println("Initial bogie count: " + trainConsist.size());
 
-        // ---------------- UC2 ----------------
         trainConsist.add("Sleeper");
         trainConsist.add("AC Chair");
         trainConsist.add("First Class");
@@ -36,7 +34,6 @@ public class Train {
         trainConsist.remove("AC Chair");
         System.out.println("\nFinal Train Consist: " + trainConsist);
 
-        // ---------------- UC3 ----------------
         Set<String> bogieIds = new HashSet<>();
         bogieIds.add("BG101");
         bogieIds.add("BG102");
@@ -45,7 +42,6 @@ public class Train {
 
         System.out.println("\nUnique Bogie IDs: " + bogieIds);
 
-        // ---------------- UC4 (Map) ----------------
         Map<String, String> bogieDetails = new HashMap<>();
         bogieDetails.put("BG101", "Sleeper");
         bogieDetails.put("BG102", "First Class");
@@ -56,7 +52,6 @@ public class Train {
             System.out.println(id + " → " + bogieDetails.get(id));
         }
 
-        // ---------------- UC4 (LinkedList Order) ----------------
         LinkedList<String> trainOrder = new LinkedList<>();
         trainOrder.add("Engine");
         trainOrder.add("Sleeper");
@@ -70,7 +65,6 @@ public class Train {
 
         System.out.println("\nOrdered Train: " + trainOrder);
 
-        // ---------------- UC5 ----------------
         Set<String> trainFormation = new LinkedHashSet<>();
         trainFormation.add("Engine");
         trainFormation.add("Sleeper");
@@ -80,7 +74,6 @@ public class Train {
 
         System.out.println("\nOrdered + Unique Formation: " + trainFormation);
 
-        // ---------------- UC6 ----------------
         Map<String, Integer> bogieCapacity = new HashMap<>();
         bogieCapacity.put("Sleeper", 72);
         bogieCapacity.put("AC Chair", 60);
@@ -91,7 +84,6 @@ public class Train {
             System.out.println(e.getKey() + " → " + e.getValue());
         }
 
-        // ---------------- UC7 ----------------
         System.out.println("\n--- UC7: Sort Bogies by Capacity ---");
 
         List<Bogie> bogies = new ArrayList<>();
@@ -106,7 +98,6 @@ public class Train {
             System.out.println(b);
         }
 
-        // ---------------- UC8 ----------------
         System.out.println("\n--- UC8: Filter Bogies using Streams ---");
 
         List<Bogie> filtered = bogies.stream()
@@ -116,7 +107,6 @@ public class Train {
         System.out.println("\nFiltered Bogies (Capacity >= 50):");
         filtered.forEach(System.out::println);
 
-        // ---------------- UC9 ----------------
         System.out.println("\n--- UC9: Group Bogies by Type ---");
 
         List<Bogie> allBogies = new ArrayList<>();
@@ -138,6 +128,37 @@ public class Train {
             for (Bogie b : entry.getValue()) {
                 System.out.println("  " + b);
             }
+        }
+
+        System.out.println("\n--- UC11: Train ID & Cargo Code Validation ---");
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter Train ID (Format: TRN-1234): ");
+        String trainId = sc.nextLine();
+
+        System.out.print("Enter Cargo Code (Format: PET-AB): ");
+        String cargoCode = sc.nextLine();
+
+        String trainRegex = "TRN-\\d{4}";
+        String cargoRegex = "PET-[A-Z]{2}";
+
+        Pattern trainPattern = Pattern.compile(trainRegex);
+        Pattern cargoPattern = Pattern.compile(cargoRegex);
+
+        Matcher trainMatcher = trainPattern.matcher(trainId);
+        Matcher cargoMatcher = cargoPattern.matcher(cargoCode);
+
+        if (trainMatcher.matches()) {
+            System.out.println("Valid Train ID");
+        } else {
+            System.out.println("Invalid Train ID");
+        }
+
+        if (cargoMatcher.matches()) {
+            System.out.println("Valid Cargo Code");
+        } else {
+            System.out.println("Invalid Cargo Code");
         }
 
         System.out.println("\nProgram continues...");
